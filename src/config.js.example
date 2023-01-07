@@ -1,0 +1,23 @@
+export const persons = [
+  {
+    name: "person_a",
+    link: "some_url",
+    email: "some_email_to_send_to",
+    srcPath: "media_sources_to_search",
+  },
+];
+
+export const exts = ["jpg", "jpeg", "mov", "mp4", "3gp"];
+
+export const fileShare = "some_dest_root";
+
+export const appScope = "ON_THIS_DAT";
+
+export const emailCfg = {
+  from: "email_from_address",
+  user: "user",
+  pass: "password",
+  subject: "Photos of the day",
+  client: "some_smtp",
+  port: 587,
+};
