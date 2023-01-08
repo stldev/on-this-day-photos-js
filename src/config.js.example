@@ -9,7 +9,7 @@ export const persons = [
 
 export const pwshLocation = "SOME_OTHER_POWERSHELL_LOCATION";
 
-export const exts = ["jpg", "jpeg", "mov", "mp4", "3gp"];
+export const exts = ["jpg", "jpeg", "mov", "mp4"];
 
 export const fileShare = "some_dest_root";
 
