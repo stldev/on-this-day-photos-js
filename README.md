@@ -3,7 +3,10 @@
 ## Problem
 
 - Send out, in the morning, all the media that happened on this day in the previous years
-- OneDrive does this but it is not split across directories, all media generates one link
+- 3rd Party photo storage providers do this but there are drawbacks:
+  - The files are not split across directories
+  - All media generates one link
+  - Hitting url can be slow to re-compute
 - The link does not have anonymous access
 - Clicking on the link must re-compute the media because it is very slow
 
