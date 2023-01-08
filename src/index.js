@@ -41,8 +41,8 @@ async function start() {
     const srcDir = `${filesSrc}\\person_${person.name}${person.extraPath}`;
     const dotExts = exts.map((m) => `.${m}`);
     const extsJson = JSON.stringify(dotExts);
-    const month = Number(today.split("-")[1]); // TODO: put back to normal
-    const day = Number(today.split("-")[2]); // TODO: put back to normal
+    const month = Number(today.split("-")[1]);
+    const day = Number(today.split("-")[2]);
 
     const scriptArgs = `-personsrcpath "${srcDir}" -exts '${extsJson}' -dtmonth ${month} -dtday ${day}`;
     const filesJson = execSync(`${scriptGetFiles} ${scriptArgs}`, execOpts);
