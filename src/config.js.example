@@ -13,6 +13,8 @@ export const exts = ["jpg", "jpeg", "mov", "mp4", "3gp"];
 
 export const fileShare = "some_dest_root";
 
+export const filesSrc = "some_src_root";
+
 export const appScope = "ON_THIS_DAT";
 
 export const emailCfg = {

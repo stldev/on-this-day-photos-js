@@ -6,6 +6,7 @@ import {
   persons,
   exts,
   fileShare,
+  filesSrc,
   appScope,
   emailCfg,
   pwshLocation,
@@ -33,26 +34,21 @@ function sendEmail(link, email, count) {
 
 async function start() {
   for await (const person of persons) {
-    // TODO: fix paths
-    // const destDir = `${fileShare}\\${appScope}\\${person.name}\\${today}`;
-    const destDir = `C:\\_CODE\\_STLDEV\\on-this-day-photos-js\\test-media\\rbb-imgs\\${today}`;
+    const destDir = `${fileShare}\\${appScope}\\${person.name}\\${today}`;
 
     if (!existsSync(destDir)) mkdirSync(destDir);
 
-    // TODO: fix paths
-    // const destDir2 = `${fileShare}\\${appScope}\\${person.name}`;
-    const destDir2 = `C:\\_CODE\\_STLDEV\\on-this-day-photos-js\\test-media\\${today}`;
-
+    const srcDir = `${filesSrc}\\person_${person.name}${person.extraPath}`;
     const dotExts = exts.map((m) => `.${m}`);
     const extsJson = JSON.stringify(dotExts);
-    const month = Number(today.split("-")[1]) + 3; // TODO: put back to normal
-    const day = Number(today.split("-")[2]) + 2; // TODO: put back to normal
+    const month = Number(today.split("-")[1]); // TODO: put back to normal
+    const day = Number(today.split("-")[2]); // TODO: put back to normal
 
-    const scriptArgs = `-personsrcpath "${destDir2}" -exts '${extsJson}' -dtmonth ${month} -dtday ${day}`;
+    const scriptArgs = `-personsrcpath "${srcDir}" -exts '${extsJson}' -dtmonth ${month} -dtday ${day}`;
     const filesJson = execSync(`${scriptGetFiles} ${scriptArgs}`, execOpts);
-    const files = JSON.parse(filesJson || "[]");
+    const files = JSON.parse(filesJson) || [];
 
-    // console.log("files", files);
+    // console.log("filesJson", filesJson);
 
     files.forEach((filePath) => {
       const nameChunks = filePath.split("\\");
