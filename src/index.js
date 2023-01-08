@@ -20,19 +20,15 @@ const execOpts = {
 
 const today = new Date().toISOString().split("T")[0];
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const scriptPath = path.join(__dirname, "./send-email.ps1");
+const scriptEmail = path.join(__dirname, "./send-email.ps1");
+const scriptGetFiles = path.join(__dirname, "./get-file-list.ps1");
 
 function sendEmail(link, email, count) {
   const body = `You have ${count} media items, please view here: ${link}`;
   const creds = `-emailuser "${emailCfg.from}" -emailpass "${emailCfg.pass}"`;
   const scriptArgs2 = `-emailto "${email}" -emailsubject "${emailCfg.subject}" -emailbody "${body}" ${creds}`;
 
-  execSync(`${scriptPath} ${scriptArgs2}`, {
-    stdio: "inherit",
-    encoding: "utf-8",
-    shell: pwshLocation || "powershell",
-    windowsHide: true,
-  });
+  execSync(`${scriptEmail} ${scriptArgs2}`, execOpts);
 }
 
 async function start() {
@@ -50,10 +46,9 @@ async function start() {
     const month = Number(today.split("-")[1]) + 3;
     const day = Number(today.split("-")[2]) + 2;
 
-    const scriptPath = path.join(__dirname, "./get-file-list.ps1");
     const scriptArgs = `-personsrcpath "${destDir2}" -exts '${extsJson}' -dtmonth ${month} -dtday ${day}`;
 
-    const filesJson = execSync(`${scriptPath} ${scriptArgs}`, execOpts);
+    const filesJson = execSync(`${scriptGetFiles} ${scriptArgs}`, execOpts);
 
     const files = JSON.parse(filesJson || "[]");
 
