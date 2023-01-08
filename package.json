@@ -8,8 +8,5 @@
     "start": "node ./src/index.js"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "fast-glob": "^3.2.12"
-  }
+  "license": "ISC"
 }
