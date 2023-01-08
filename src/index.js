@@ -2,9 +2,21 @@ import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { execSync } from "node:child_process";
 import path, { normalize } from "node:path";
 import * as url from "url";
-import { persons, exts, fileShare, appScope, emailCfg } from "./config.js";
+import {
+  persons,
+  exts,
+  fileShare,
+  appScope,
+  emailCfg,
+  pwshLocation,
+} from "./config.js";
 
-const execOpts = {};
+const execOpts = {
+  // stdio: "inherit", // If uncommented then execSync does NOT return data
+  encoding: "utf-8",
+  shell: pwshLocation || "powershell",
+  windowsHide: true,
+};
 
 const today = new Date().toISOString().split("T")[0];
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -18,7 +30,8 @@ function sendEmail(link, email, count) {
   execSync(`${scriptPath} ${scriptArgs2}`, {
     stdio: "inherit",
     encoding: "utf-8",
-    shell: "powershell",
+    shell: pwshLocation || "powershell",
+    windowsHide: true,
   });
 }
 
@@ -35,34 +48,24 @@ async function start() {
     const dotExts = exts.map((m) => `.${m}`);
     const extsJson = JSON.stringify(dotExts);
     const month = Number(today.split("-")[1]) + 3;
-    const day = Number(today.split("-")[2]) + 3;
+    const day = Number(today.split("-")[2]) + 2;
 
     const scriptPath = path.join(__dirname, "./get-file-list.ps1");
     const scriptArgs = `-personsrcpath "${destDir2}" -exts '${extsJson}' -dtmonth ${month} -dtday ${day}`;
 
-    // console.log("....${scriptPath} ${scriptArgs}-------------------");
-    // console.log(`${scriptPath} ${scriptArgs}`);
+    const filesJson = execSync(`${scriptPath} ${scriptArgs}`, execOpts);
 
-    const filesJson = execSync(`${scriptPath} ${scriptArgs}`, {
-      stdio: "inherit",
-      encoding: "utf-8",
-      // shell: "powershell",
-      shell:
-        "C:\\Users\\rbb2c\\AppData\\Roaming\\_testrick\\pwsh_x86_7-2-8\\pwsh.exe",
-      windowsHide: true,
+    const files = JSON.parse(filesJson || "[]");
+
+    // console.log("files", files);
+
+    files.forEach((filePath) => {
+      const nameChunks = filePath.split("\\");
+      const fileName = nameChunks[nameChunks.length - 1];
+      copyFileSync(normalize(filePath), `${destDir}\\${fileName}`);
     });
 
-    // const files = JSON.parse(filesJson || "[]");
-
-    // console.log("filesJson", filesJson);
-
-    // files.forEach((filePath) => {
-    //   const nameChunks = filePath.split("\\");
-    //   const fileName = nameChunks[nameChunks.length - 1];
-    //   copyFileSync(normalize(filePath), `${destDir}\\${fileName}`);
-    // });
-
-    // sendEmail(person.link, person.email, files.length);
+    sendEmail(person.link, person.email, files.length);
   }
 
   return "DONE!";

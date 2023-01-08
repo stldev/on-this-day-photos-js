@@ -1,15 +1,8 @@
 param($personsrcpath='__missing__', $exts='__missing__', $dtmonth=0, $dtday=0) 
 
+# Write-Host "---------- POWERSHELL ----------"
+# Write-Host "ps version = $($PSVersionTable.PSVersion)"
 # Write-Host "Extensions = $($exts)"
-Write-Host "ps version = $($PSVersionTable.PSVersion)"
-
-# Get-CimInstance -Class Win32_Printer
-
-# Get-PrinterPort
-
-Write-Host "----------------------------------------------"
-
-# Write-Host "----------------------------------------------"
 
 $extensions = ConvertFrom-Json -InputObject $exts
 
