@@ -25,7 +25,7 @@ const scriptEmail = path.join(__dirname, "./send-email.ps1");
 const scriptGetFiles = path.join(__dirname, "./get-file-list.ps1");
 
 function sendEmail(link, email, count) {
-  const body = `You have ${count} media items, please view here: ${link}`;
+  const body = `You have ${count} media items, please view here: <a href="${link}">Photos of the day</a>`;
   const creds = `-emailuser "${emailCfg.from}" -emailpass "${emailCfg.pass}"`;
   const scriptArgs2 = `-emailto "${email}" -emailsubject "${emailCfg.subject}" -emailbody "${body}" ${creds}`;
 
