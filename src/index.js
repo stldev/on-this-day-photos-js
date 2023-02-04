@@ -125,8 +125,8 @@ async function start() {
 
     rmSync(`${destDir}\\temp`, { recursive: true, forc: true });
 
-    sendEmail(person.link, "rick1stl@gmail.com", files.length);
-    // sendEmail(person.link, person.email, files.length);
+    // sendEmail(person.link, emailCfg.admin, files.length); // FOR_TESTING
+    sendEmail(person.link, person.email, files.length);
   }
 
   return "DONE!";
