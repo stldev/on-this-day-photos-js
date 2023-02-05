@@ -1,12 +1,16 @@
 {
   "name": "on-this-day-photos-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Find all media on current day, add date to photo and move to cloud share.",
+  "author": "https://github.com/stldev",
+  "license": "ISC",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node ./src/index.js"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "jimp": "^0.17.9",
+    "jpeg-autorotate": "^8.0.1"
+  }
 }
