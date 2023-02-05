@@ -19,10 +19,12 @@ const execOpts = {
   windowsHide: true,
 };
 
+// const today = "2023-02-05"; // FOR_TESTING
 const today = new Date().toISOString().split("T")[0];
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const scriptEmail = path.join(__dirname, "./send-email.ps1");
 const scriptGetFiles = path.join(__dirname, "./get-file-list.ps1");
+const scriptSetCreatedDate = path.join(__dirname, "./set-created-date.ps1");
 
 function sendEmail(link, email, count) {
   const body = `You have ${count} media items, please view here: <a href='${link}'>Photos of the day</a>`;
@@ -54,8 +56,12 @@ async function start() {
       const nameChunks = filePath.split("\\");
       const fileName = nameChunks[nameChunks.length - 1];
       copyFileSync(normalize(filePath), `${destDir}\\${fileName}`);
+
+      const scriptArgs2 = `-filedir "${destDir}" -filename "${fileName}"`;
+      execSync(`${scriptSetCreatedDate} ${scriptArgs2}`, execOpts);
     });
 
+    // sendEmail(person.link, emailCfg.admin, files.length); // FOR_TESTING
     sendEmail(person.link, person.email, files.length);
   }
 
