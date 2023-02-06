@@ -24,7 +24,7 @@ const today = new Date().toISOString().split("T")[0];
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const scriptEmail = path.join(__dirname, "./send-email.ps1");
 const scriptGetFiles = path.join(__dirname, "./get-file-list.ps1");
-const scriptSetCreatedDate = path.join(__dirname, "./set-created-date.ps1");
+// const scriptSetCreatedDate = path.join(__dirname, "./set-created-date.ps1");
 
 function sendEmail(link, email, count) {
   const body = `You have ${count} media items, please view here: <a href='${link}'>Photos of the day</a>`;
@@ -48,15 +48,15 @@ async function start() {
 
     const scriptArgs = `-personsrcpath "${srcDir}" -exts '${extsJson}' -dtmonth ${month} -dtday ${day}`;
     const filesJson = execSync(`${scriptGetFiles} ${scriptArgs}`, execOpts);
-    const files = JSON.parse(filesJson) || [];
+    const files = filesJson.length < 9 ? [] : JSON.parse(filesJson || []);
 
     files.forEach((filePath) => {
       const nameChunks = filePath.split("\\");
       const fileName = nameChunks[nameChunks.length - 1];
       copyFileSync(normalize(filePath), `${destDir}\\${fileName}`);
 
-      const scriptArgs2 = `-filedir "${destDir}" -filename "${fileName}"`;
-      execSync(`${scriptSetCreatedDate} ${scriptArgs2}`, execOpts);
+      // const scriptArgs2 = `-filedir "${destDir}" -filename "${fileName}"`;
+      // execSync(`${scriptSetCreatedDate} ${scriptArgs2}`, execOpts);
     });
 
     // sendEmail(person.link, emailCfg.admin, files.length); // FOR_TESTING
