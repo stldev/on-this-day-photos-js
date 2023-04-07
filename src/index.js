@@ -8,7 +8,6 @@ import {
   fileShare,
   filesSrc,
   appScope,
-  emailCfg,
   pwshLocation,
 } from "./config.js";
 
@@ -22,17 +21,17 @@ const execOpts = {
 // const today = "2023-02-05"; // FOR_TESTING
 const today = new Date().toISOString().split("T")[0];
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const scriptEmail = path.join(__dirname, "./send-email.ps1");
+// const scriptEmail = path.join(__dirname, "./send-email.ps1");
 const scriptGetFiles = path.join(__dirname, "./get-file-list.ps1");
 // const scriptSetCreatedDate = path.join(__dirname, "./set-created-date.ps1");
 
-function sendEmail(link, email, count) {
-  const body = `You have ${count} media items, please view here: <a href='${link}'>Photos of the day</a>`;
-  const creds = `-emailuser "${emailCfg.from}" -emailpass "${emailCfg.pass}"`;
-  const scriptArgs2 = `-emailto "${email}" -emailsubject "${emailCfg.subject}" -emailbody "${body}" ${creds}`;
+// function sendEmail(link, email, count) {
+//   const body = `You have ${count} media items, please view here: <a href='${link}'>Photos of the day</a>`;
+//   const creds = `-emailuser "${emailCfg.from}" -emailpass "${emailCfg.pass}"`;
+//   const scriptArgs2 = `-emailto "${email}" -emailsubject "${emailCfg.subject}" -emailbody "${body}" ${creds}`;
 
-  execSync(`${scriptEmail} ${scriptArgs2}`, execOpts);
-}
+//   execSync(`${scriptEmail} ${scriptArgs2}`, execOpts);
+// }
 
 async function start() {
   for await (const person of persons) {
@@ -60,7 +59,7 @@ async function start() {
     });
 
     // sendEmail(person.link, emailCfg.admin, files.length); // FOR_TESTING
-    sendEmail(person.link, person.email, files.length);
+    // sendEmail(person.link, person.email, files.length);
   }
 
   return "DONE!";
