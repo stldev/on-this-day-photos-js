@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, rmdirSync } from "node:fs";
 import { execSync } from "node:child_process";
 import path, { normalize } from "node:path";
 import * as url from "url";
@@ -34,10 +34,14 @@ const scriptGetFiles = path.join(__dirname, "./get-file-list.ps1");
 // }
 
 async function start() {
-  for await (const person of persons) {
-    const destDir = `${fileShare}\\${appScope}\\${person.name}\\${today}`;
+  console.time("DO_IT");
 
-    if (!existsSync(destDir)) mkdirSync(destDir);
+  for await (const person of persons) {
+    // const destDir = `${fileShare}\\${appScope}\\${person.name}\\${today}`;
+    const destDir = `${fileShare}\\${appScope}\\${person.name}SrcMedia`;
+
+    if (existsSync(destDir)) rmdirSync(destDir, { recursive: true });
+    mkdirSync(destDir);
 
     const srcDir = `${filesSrc}\\person_${person.name}${person.extraPath}`;
     const dotExts = exts.map((m) => `.${m}`);
@@ -61,6 +65,8 @@ async function start() {
     // sendEmail(person.link, emailCfg.admin, files.length); // FOR_TESTING
     // sendEmail(person.link, person.email, files.length);
   }
+
+  console.timeEnd("DO_IT");
 
   return "DONE!";
 }
